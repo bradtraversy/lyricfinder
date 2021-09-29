@@ -11,18 +11,14 @@ const Lyrics = props => {
   useEffect(() => {
     axios
       .get(
-        `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${
-          props.match.params.id
-        }&apikey=${process.env.REACT_APP_MM_KEY}`
+        `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.lyrics.get?commontrack_id=${props.match.params.id}&apikey=${process.env.REACT_APP_MM_KEY}`
       )
       .then(res => {
         let lyrics = res.data.message.body.lyrics;
         setLyrics({ lyrics });
 
         return axios.get(
-          `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.get?track_id=${
-            props.match.params.id
-          }&apikey=${process.env.REACT_APP_MM_KEY}`
+          `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.get?commontrack_id=${props.match.params.id}&apikey=${process.env.REACT_APP_MM_KEY}`
         );
       })
       .then(res => {
@@ -71,10 +67,8 @@ const Lyrics = props => {
             {track.track.explicit === 0 ? "No" : "Yes"}
           </li>
           <li className="list-group-item">
-            <strong>Release Date</strong>:{" "}
-            <Moment format="MM/DD/YYYY">
-              {track.track.first_release_date}
-            </Moment>
+            <strong>Last Updated</strong>:{" "}
+            <Moment format="MM/DD/YYYY">{track.track.updated_time}</Moment>
           </li>
         </ul>
       </>
